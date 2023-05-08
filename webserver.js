@@ -11,7 +11,7 @@ var LED04 = new Gpio(4, 'out'), //use GPIO pin 4 as output
     LED23 = new Gpio(23, 'out'),
     LED24 = new Gpio(24, 'out'),
     LED25 = new Gpio(25, 'out'),
-    LED05 = new Gpio(5, 'out'),te
+    LED05 = new Gpio(5, 'out'),
     LED06 = new Gpio(6, 'out');
 
     //Put all the LED variables in an array
