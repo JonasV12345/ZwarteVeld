@@ -3,16 +3,16 @@ var http = require('http');
 var fs = require('fs');
 var io = require('socket.io')(http) //require socket.io module and pass the http object (server)
 var Gpio = require('onoff').Gpio; //include onoff to interact with the GPIO
-var LED04 = new Gpio(4, 'out'), //use GPIO pin 4 as output
-    LED17 = new Gpio(17, 'out'),
-    LED27 = new Gpio(27, 'out'),
-    LED22 = new Gpio(22, 'out'),
-    LED18 = new Gpio(18, 'out'),
-    LED23 = new Gpio(23, 'out'),
-    LED24 = new Gpio(24, 'out'),
-    LED25 = new Gpio(25, 'out'),
-    LED05 = new Gpio(5, 'out'),te
-    LED06 = new Gpio(6, 'out');
+var LED04 = new Gpio(4, "out"), //use GPIO pin 4 as output
+  LED17 = new Gpio(17, "out"),
+  LED27 = new Gpio(27, "out"),
+  LED22 = new Gpio(22, "out"),
+  LED18 = new Gpio(18, "out"),
+  LED23 = new Gpio(23, "out"),
+  LED24 = new Gpio(24, "out"),
+  LED25 = new Gpio(2, "out"),
+  LED05 = new Gpio(3, "out"),
+  LED06 = new Gpio(10, "out");
 
     //Put all the LED variables in an array
     var lampen = [LED04, LED17, LED27, LED22, LED18, LED23, LED24, LED25, LED05, LED06];
