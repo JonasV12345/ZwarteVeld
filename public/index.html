@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles.css">
+    <title>Document</title>
+  </head>
+  <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.js"></script>
+    <script>
+    var socket1 = io("ws://192.168.1.105:8080",{ transports: ['websocket', 'polling', 'flashsocket'] }); //load socket.io-client and connect to the host that serves the page
+    var socket2 = io() // raspberry pi met website  
+    let lamps = 0;
+
+
+      let lampsOn=["lampOn1","lampOn2","lampOn3","lampOn4","lampOn5","lampOn6","lampOn7","lampOn8","lampOn9","lampOn10"];
+      function lampDown() { 
+        if(lamps>0){
+        lamps-=1;
+        socket1.emit("lampsOff",lamps);
+        socket2.emit("lampsOff",lamps);
+        }
+      document.getElementById(lampsOn[lamps]).style.display="none";
+
+      };
+      function lampUp() { 
+  
+      if(lamps<10){
+        document.getElementById(lampsOn[lamps]).style.display="block";
+        lamps+=1;
+        socket1.emit("lampsOn",lamps);
+        socket2.emit("lampsOn",lamps);
+        }
+      };
+    </script>
+    <h1>test</h1>
+    <div style="position: relative">
+      <img
+        src="/afbeeldingen/PngItem_212524.png"
+        alt="Tree"
+        width="500"
+        height="900"
+      />
+      <button class="up-arrow-btn" id="arrowUP" onclick="lampUp();"></button>
+      <button class="arrow-down-button" id="arrowDown" onclick="lampDown();"></button>
+      <img
+        id = "lampOff1"
+        src="/afbeeldingen/LightBulb1.jpg"
+        alt="lampoff1"
+        style="
+          position: absolute;
+          top: 800px;
+          left: 220px;
+          width: 30px;
+          height: 30px;
+        "
+      />
+      <img
+        id = "lampOff2"
+        src="/afbeeldingen/LightBulb2.jpg"
+        alt="lampoff2"
+        style="
+          position: absolute;
+          top: 725px;
+          left: 220px;
+          width: 30px;
+          height: 30px;
+        "
+      />
+      <img
+        id = "lampOff3"
+        src="/afbeeldingen/LightBulb3.jpg"
+        alt="lampoff3"
+        style="
+          position: absolute;
+          top: 650px;
+          left: 220px;
+          width: 30px;
+          height: 30px;
+        "
+      />
+      <img
+        id = "lampOff4"
+        src="/afbeeldingen/LightBulb4.jpg"
+        alt="lampoff4"
+        style="
+          position: absolute;
+          top: 575px;
+          left: 220px;
+          width: 30px;
+          height: 30px;
+        "
+      />
+      <img
+        id = "lampOff5"
+        src="/afbeeldingen/LightBulb5.jpg"
+        alt="lampoff5"
+        style="
+          position: absolute;
+          top: 500px;
+          left: 220px;
+          width: 30px;
+          height: 30px;
+        "
+      />
+      <img
+        id = "lampOff6"
+        src="/afbeeldingen/LightBulb6.jpg"
+        alt="lampoff6"
+        style="
+          position: absolute;
+          top: 425px;
+          left: 220px;
+          width: 30px;
+          height: 30px;
+        "
+      />
+      <img
+        id = "lampOff7"
+        src="/afbeeldingen/LightBulb7.jpg"
+        alt="lampoff7"
+        style="
+          position: absolute;
+          top: 350px;
+          left: 220px;
+          width: 30px;
+          height: 30px;
+        "
+      />
+      <img
+        id = "lampOff8"
+        src="/afbeeldingen/LightBulb8.jpg"
+        alt="lampoff8"
+        style="
+          position: absolute;
+          top: 275px;
+          left: 220px;
+          width: 30px;
+          height: 30px;
+        "
+      />
+      <img
+        id = "lampOff9"
+        src="/afbeeldingen/LightBulb9.jpg"
+        alt="lampoff9"
+        style="
+          position: absolute;
+          top: 200px;
+          left: 220px;
+          width: 30px;
+          height: 30px;
+        "
+      />
+      <img
+        id = "lampOff10"
+        src="/afbeeldingen/LightBulb10.jpg"
+        alt="lampoff10"
+        style="
+          position: absolute;
+          top: 125px;
+          left: 220px;
+          width: 30px;
+          height: 30px;
+        "
+      />
+      <img
+      id="lampOn1"
+      src="/afbeeldingen/LightBulb1ON.jpg"
+      alt="lampOn1"
+      style="
+        position: absolute;
+        top: 800px;
+        left: 220px;
+        width: 30px;
+        height: 30px;
+        display: none;
+      "
+    />
+    <img
+      id="lampOn2"
+      src="/afbeeldingen/LightBulb2ON.jpg"
+      alt="lampOn2"
+      style="
+        position: absolute;
+        top: 725px;
+        left: 220px;
+        width: 30px;
+        height: 30px;
+        display: none;
+      "
+    />
+    <img
+      id="lampOn3"
+      src="/afbeeldingen/LightBulb3ON.jpg"
+      alt="lampOn3"
+      style="
+        position: absolute;
+        top: 650px;
+        left: 220px;
+        width: 30px;
+        height: 30px;
+        display: none;
+      "
+    />
+    <img
+      id="lampOn4"
+      src="/afbeeldingen/LightBulb4ON.jpg"
+      alt="lampOn4"
+      style="
+        position: absolute;
+        top: 575px;
+        left: 220px;
+        width: 30px;
+        height: 30px;
+        display: none;
+      "
+    />
+    <img
+      id="lampOn5"
+      src="/afbeeldingen/LightBulb5ON.jpg"
+      alt="lampOn5"
+      style="
+        position: absolute;
+        top: 500px;
+        left: 220px;
+        width: 30px;
+        height: 30px;
+        display: none;
+      "
+    />
+    <img
+      id="lampOn6"
+      src="/afbeeldingen/LightBulb6ON.jpg"
+      alt="lampOn6"
+      style="
+        position: absolute;
+        top: 425px;
+        left: 220px;
+        width: 30px;
+        height: 30px;
+        display: none;
+      "
+    />
+    <img
+      id="lampOn7"
+      src="/afbeeldingen/LightBulb7ON.jpg"
+      alt="lampOn7"
+      style="
+        position: absolute;
+        top: 350px;
+        left: 220px;
+        width: 30px;
+        height: 30px;
+        display: none;
+      "
+    />
+    <img
+      id="lampOn8"
+      src="/afbeeldingen/LightBulb8ON.jpg"
+      alt="lampOn8"
+      style="
+        position: absolute;
+        top: 275px;
+        left: 220px;
+        width: 30px;
+        height: 30px;
+        display: none;
+      "
+    />
+    <img
+      id="lampOn9"
+      src="/afbeeldingen/LightBulb9ON.jpg"
+      alt="lampOn9"
+      style="
+        position: absolute;
+        top: 200px;
+        left: 220px;
+        width: 30px;
+        height: 30px;
+        display: none;
+      "
+    />
+    <img
+      id="lampOn10"
+      src="/afbeeldingen/LightBulb10ON.jpg"
+      alt="lampOn10"
+      style="
+        position: absolute;
+        top: 125px;
+        left: 220px;
+        width: 30px;
+        height: 30px;
+        display: none;
+      "
+    />
+    </div>
+    
+    
+    <!--
+    
+    <button id="myButton" onclick="showImage();">Show Picture</button>
+    <img id="bulb1" src="/afbeeldingen/LightBulb1.jpg" alt="bulb1off" style="display: none;">
+    -->
+  </body>
+</html>
