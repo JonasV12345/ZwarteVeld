@@ -66,21 +66,35 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
     var aantallampen = 0;
     socket.on('lampsOn', function(lamps){
         aantallampen = lamps;
-        console.log("het aantal lampen die branden",aantallampen);
-        for (let i = 0; i < aantallampen; i++) {
-            
-            lampen[i].writeSync(1);    
-            };
-            console.log("lampen aan",aantallampen);
+
+        On(aantallampen);
 
     });
     socket.on('lampsOff', function(lamps){
         aantallampen = lamps;
+       Off(aantallampen);
+
+    });
+
+    function Off(aantallampen,delay) {
         console.log("het aantal lampen die branden",aantallampen);
         for (let j = 9; j >= aantallampen; j--) {
             console.log(aantallampen);
             lampen[j].writeSync(0);
+            setTimeout(() => { console.log("World!"); }, delay);
+          
             };
-
-    });
+    }
+    function On(aantallampen,delay) {
+        console.log("het aantal lampen die branden", aantallampen);
+        for (let i = 0; i < aantallampen; i++) {
+           lampen[i].writeSync(1);
+           setTimeout(sleep(),delay);
+         
+        };
+        console.log("lampen aan", aantallampen);
+    }
+    function sleep() {
+        
+    }
 });
