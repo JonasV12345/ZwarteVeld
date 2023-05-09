@@ -80,30 +80,33 @@ io.sockets.on("connection", function (socket) {
   let delay = 2000;
   socket.on("lampsOn", function (lamps) {
     aantallampen = lamps;
-
-    On(aantallampen,delay);
+    while (aantallampen == 10) {
+      Off(8, 0, 100);
+      On(9, 100);
+    }
+    On(aantallampen, delay);
   });
   socket.on("lampsOff", function (lamps) {
     aantallampen = lamps;
-    Off(aantallampen,delay);
+    Off(aantallampen, delay);
   });
 
   function Off(aantallampen, delay) {
     console.log("het aantal lampen die branden", aantallampen);
     for (let j = 9; j >= aantallampen; j--) {
       console.log(aantallampen);
-      setTimeout(function() {
+      setTimeout(function () {
         lampen[j].writeSync(0);
-      }, delay*((9-j)+1));
+      }, delay * (9 - j + 1));
     }
   }
   function On(aantallampen, delay) {
     console.log("het aantal lampen die branden", aantallampen);
     for (let i = 0; i < aantallampen; i++) {
-      setTimeout(function() {
+      setTimeout(function () {
         lampen[i].writeSync(1);
-        console.log("time that is past in seconds",delay*(i+1));
-      }, delay*(i+1));
+        console.log("time that is past in seconds", delay * (i + 1));
+      }, delay * (i + 1));
     }
     console.log("lampen aan", aantallampen);
   }
