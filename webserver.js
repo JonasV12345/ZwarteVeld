@@ -80,12 +80,13 @@ io.sockets.on("connection", function (socket) {
   socket.on("lampsOn", function (lamps) {
     On(lamps, 0);
     if (lamps === 10) {
-      for (let i = 0; i < 4; i++) {
-      setTimeout(function(){loop();},(3800*i));
+      let i = 0;
+      while (i < 4) {
+        setTimeout(function(){loop();},(3800*i));
+        i++;
       }
     }
-    
-  });
+   });
   socket.on("lampsOff", function (lamps) {
     Off(lamps, 0);
   });
