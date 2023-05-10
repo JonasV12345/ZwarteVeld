@@ -1,6 +1,7 @@
 var path = require("path");
 var http = require("http");
 var fs = require("fs");
+const { on } = require("events");
 var io = require("socket.io")(http); //require socket.io module and pass the http object (server)
 var Gpio = require("onoff").Gpio; //include onoff to interact with the GPIO
 
@@ -73,31 +74,30 @@ server.listen(8080, function () {
 });
 
 io.listen(server);
-
+const sleep = ms => new Promise(r => setTimeout(r, ms));
 io.sockets.on("connection", function (socket) {
   // WebSocket Connection
-  var aantallampen = 0;
-  let delay = 2000;
   socket.on("lampsOn", function (lamps) {
-    aantallampen = lamps;
-    while (aantallampen == 10) {
+    On(lamps, 0);
+    if (lamps === 10) {
       Off(8, 0, 100);
-      On(9, 100);
+      setTimeout(function() {
+        On(9, 100);
+      }, 3000);
     }
-    On(aantallampen, delay);
+    
   });
   socket.on("lampsOff", function (lamps) {
-    aantallampen = lamps;
-    Off(aantallampen, delay);
+    Off(lamps, 0);
   });
 
-  function Off(aantallampen, delay) {
+  function Off(x,aantallampen, delay) {
     console.log("het aantal lampen die branden", aantallampen);
-    for (let j = 9; j >= aantallampen; j--) {
+    for (let j = x; j >= aantallampen; j--) {
       console.log(aantallampen);
       setTimeout(function () {
         lampen[j].writeSync(0);
-      }, delay * (9 - j + 1));
+      }, delay * (x - j + 1));
     }
   }
   function On(aantallampen, delay) {
@@ -105,7 +105,6 @@ io.sockets.on("connection", function (socket) {
     for (let i = 0; i < aantallampen; i++) {
       setTimeout(function () {
         lampen[i].writeSync(1);
-        console.log("time that is past in seconds", delay * (i + 1));
       }, delay * (i + 1));
     }
     console.log("lampen aan", aantallampen);
