@@ -80,10 +80,9 @@ io.sockets.on("connection", function (socket) {
   socket.on("lampsOn", function (lamps) {
     On(lamps, 0);
     if (lamps === 10) {
-      Off(8, 0, 100);
-      setTimeout(function() {
-        On(9, 100);
-      }, 3000);
+      for (let i = 0; i < 4; i++) {
+      setTimeout(function(){loop();},(3200*i));
+      }
     }
     
   });
@@ -108,5 +107,11 @@ io.sockets.on("connection", function (socket) {
       }, delay * (i + 1));
     }
     console.log("lampen aan", aantallampen);
+  }
+  function loop(){
+    Off(8, 0, 200);
+    setTimeout(function() {
+      On(9, 200);
+      }, 1600);
   }
 });
