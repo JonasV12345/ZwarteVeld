@@ -80,11 +80,7 @@ io.sockets.on("connection", function (socket) {
   socket.on("lampsOn", function (lamps) {
     On(lamps, 0);
     if (lamps === 10) {
-      let i = 0;
-      while (i < 4) {
-        setTimeout(function(){loop();},(3800*i));
-        i++;
-      }
+      myLoop();
     }
    });
   socket.on("lampsOff", function (lamps) {
@@ -92,16 +88,16 @@ io.sockets.on("connection", function (socket) {
   });
 
   function Off(x,aantallampen, delay) {
-    console.log("het aantal lampen die branden", aantallampen);
+    //console.log("het aantal lampen die branden", aantallampen);
     for (let j = x; j >= aantallampen; j--) {
-      console.log(aantallampen);
+      //console.log(aantallampen);
       setTimeout(function () {
         lampen[j].writeSync(0);
       }, delay * (x - j + 1));
     }
   }
   function On(aantallampen, delay) {
-    console.log("het aantal lampen die branden", aantallampen);
+    //console.log("het aantal lampen die branden", aantallampen);
     for (let i = 0; i < aantallampen; i++) {
       setTimeout(function () {
         lampen[i].writeSync(1);
@@ -116,5 +112,11 @@ io.sockets.on("connection", function (socket) {
     setTimeout(function() {
       On(9, 200);
       }, 2000);
+  }
+  async function myLoop() {
+    while (true) {
+      await new Promise(resolve => setTimeout(resolve, 3800));
+      loop();
+    }
   }
 });
