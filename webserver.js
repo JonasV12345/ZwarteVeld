@@ -74,6 +74,7 @@ server.listen(8080, function () {
 });
 
 io.listen(server);
+let flag = 0;
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 io.sockets.on("connection", function (socket) {
   // WebSocket Connection
@@ -84,7 +85,19 @@ io.sockets.on("connection", function (socket) {
     }
    });
   socket.on("lampsOff", function (lamps) {
-    Off(lamps, 0);
+    if(lamps==9){
+      clearTimeout(timerID);
+      Off(9, 0);
+      clearTimeout(timerID);
+      Off(9, 0);
+      flag=1;
+      Off(9, 0);
+
+      
+    }
+    else{
+    Off(9,lamps, 0);
+    };
   });
 
   function Off(x,aantallampen, delay) {
@@ -114,9 +127,19 @@ io.sockets.on("connection", function (socket) {
       }, 2000);
   }
   async function myLoop() {
+    let i = 0;
     while (true) {
-      await new Promise(resolve => setTimeout(resolve, 3800));
+      timerID = await new Promise(resolve => setTimeout(resolve, 3800*i));
       loop();
+      i=1;
+      if(flag==1){
+        clearTimeout(timerID);
+        clearTimeout(timerID);
+        clearTimeout(timerID);
+        clearTimeout(timerID);
+        break;
+      };
     }
+    flag = 0;
   }
 });
