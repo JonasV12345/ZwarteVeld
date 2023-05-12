@@ -74,31 +74,28 @@ server.listen(8080, function () {
 });
 
 io.listen(server);
-let flag = 0;
-const sleep = ms => new Promise(r => setTimeout(r, ms));
+let intervalId;
 io.sockets.on("connection", function (socket) {
   // WebSocket Connection
-  socket.on("lampsOn", function (lamps) {
-    On(lamps, 0);
-    if (lamps === 10) {
-      myLoop();
-    }
-   });
+
   socket.on("lampsOff", function (lamps) {
     if(lamps==9){
-      clearTimeout(timerID);
+      clearTimeout(intervalId,);
       Off(9, 0);
-      clearTimeout(timerID);
-      Off(9, 0);
-      flag=1;
-      Off(9, 0);
-
-      
     }
     else{
     Off(9,lamps, 0);
     };
   });
+
+  socket.on("lampsOn", function (lamps) {
+   
+    On(lamps, 0);
+    if (lamps === 10) {
+      intervalId = setInterval(loop,3600);
+    }
+   });
+
 
   function Off(x,aantallampen, delay) {
     //console.log("het aantal lampen die branden", aantallampen);
@@ -126,20 +123,4 @@ io.sockets.on("connection", function (socket) {
       On(9, 200);
       }, 2000);
   }
-  async function myLoop() {
-    let i = 0;
-    while (true) {
-      timerID = await new Promise(resolve => setTimeout(resolve, 3800*i));
-      loop();
-      i=1;
-      if(flag==1){
-        clearTimeout(timerID);
-        clearTimeout(timerID);
-        clearTimeout(timerID);
-        clearTimeout(timerID);
-        break;
-      };
-    }
-    flag = 0;
-  }
-});
+ });
