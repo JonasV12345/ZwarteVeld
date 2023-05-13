@@ -13,10 +13,13 @@
     var socket1 = io("ws://192.168.1.105:8080",{ transports: ['websocket', 'polling', 'flashsocket'] }); //load socket.io-client and connect to the host that serves the page
     var socket2 = io() // raspberry pi met website  
     let lamps = 0;
-
+    var Int1;
+    var Int2;
 
       let lampsOn=["lampOn1","lampOn2","lampOn3","lampOn4","lampOn5","lampOn6","lampOn7","lampOn8","lampOn9","lampOn10"];
-      function lampDown() { 
+      function lampDown() {
+        clearInterval(Int1);
+        clearInterval(Int2);
         if(lamps>0){
         lamps-=1;
         socket1.emit("lampsOff",lamps);
@@ -36,8 +39,8 @@
         lamps+=1;
         }
         if(lamps==10){
-          setInterval(loop(),3800);
-          setInterval(() => {
+          Int1=setInterval(loop(),3800);
+          Int2=setInterval(() => {
             loop()
           }, 4000);
         };
