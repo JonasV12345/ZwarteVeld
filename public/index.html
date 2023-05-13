@@ -10,68 +10,69 @@
   <body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.js"></script>
     <script>
-    var socket1 = io("ws://192.168.1.105:8080",{ transports: ['websocket', 'polling', 'flashsocket'] }); //load socket.io-client and connect to the host that serves the page
-    var socket2 = io() // raspberry pi met website  
-    let lamps = 0;
-    var Int1;
-    var Int2;
 
-      let lampsOn=["lampOn1","lampOn2","lampOn3","lampOn4","lampOn5","lampOn6","lampOn7","lampOn8","lampOn9","lampOn10"];
-      function lampDown() {
-        clearInterval(Int1);
-        clearInterval(Int2);
-        if(lamps>0){
-        lamps-=1;
-        socket1.emit("lampsOff",lamps);
-        socket2.emit("lampsOff",lamps);
-        
-        }
-       
-      document.getElementById(lampsOn[lamps]).style.display="none";
+var socket1 = io("ws://192.168.1.105:8080",{ transports: ['websocket', 'polling', 'flashsocket'] }); //load socket.io-client and connect to the host that serves the page
+var socket2 = io() // raspberry pi met website  
+let lamps = 0;
+var intervals = []; // array to store interval IDs
 
-      };
-      function lampUp() { 
-  
-      if(lamps<10){
-        document.getElementById(lampsOn[lamps]).style.display="block";
-        socket1.emit("lampsOn",lamps);
-        socket2.emit("lampsOn",lamps);
-        lamps+=1;
-        }
-        if(lamps==10){
-          Int1=setInterval(loop(),3800);
-          Int2=setInterval(() => {
-            loop()
-          }, 4000);
-        };
-      };
+let lampsOn=["lampOn1","lampOn2","lampOn3","lampOn4","lampOn5","lampOn6","lampOn7","lampOn8","lampOn9","lampOn10"];
 
-      function loop() {
-        loopDown(8,0,200);
-        setTimeout(() => {
-          loopUp(9,200);
-        }, 2000);
-      }
+function lampDown() {
+  stopAllIntervals(); // stop all intervals
+  if(lamps>0){
+    lamps-=1;
+    socket1.emit("lampsOff",lamps);
+    socket2.emit("lampsOff",lamps);
+  }
+  document.getElementById(lampsOn[lamps]).style.display="none";
+};
 
-      function loopUp(lamps,time){
-       
-        for (let i = 0; i < lamps; i++) {
-          setTimeout(() => {
-          socket2.emit("lampsOn",i);
-          document.getElementById(lampsOn[i]).style.display="block";
-          }, time*(i+1)); 
-        }
-      }
+function lampUp() { 
+  if(lamps<10){
+    document.getElementById(lampsOn[lamps]).style.display="block";
+    socket1.emit("lampsOn",lamps);
+    socket2.emit("lampsOn",lamps);
+    lamps+=1;
+  }
+  if(lamps==10){
+    intervals.push(setInterval(loop, 4000)); // add interval ID to array
+  };
+};
 
-      function loopDown(startpoint,eindpoint,time){
-        
-          for (let i = startpoint; i >= eindpoint; i--) {
-            setTimeout(() => {
-            socket2.emit("lampsOff",i);
-            document.getElementById(lampsOn[i]).style.display="none";
-            }, time*((startpoint-i)+1)); 
-          }  
-      }
+function loop() {
+  intervals.push(setTimeout(() => {
+    loopDown(8, 0, 200);
+  }, 0));
+  intervals.push(setTimeout(() => {
+    loopUp(9, 200);
+  }, 2000));
+}
+
+function loopUp(lamps, time){
+  for (let i = 0; i < lamps; i++) {
+    intervals.push(setTimeout(() => {
+      socket2.emit("lampsOn",i);
+      document.getElementById(lampsOn[i]).style.display="block";
+    }, time*(i+1))); 
+  }
+}
+
+function loopDown(startpoint, eindpoint, time){
+  for (let i = startpoint; i >= eindpoint; i--) {
+    intervals.push(setTimeout(() => {
+      socket2.emit("lampsOff",i);
+      document.getElementById(lampsOn[i]).style.display="none";
+    }, time*((startpoint-i)+1))); 
+  }  
+}
+
+function stopAllIntervals() {
+  for (let i = 0; i < intervals.length; i++) {
+    clearInterval(intervals[i]);
+  }
+  intervals = []; // clear interval array
+}
 
     </script>
     <h1>test</h1>
