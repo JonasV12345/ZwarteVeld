@@ -21,6 +21,7 @@
         lamps-=1;
         socket1.emit("lampsOff",lamps);
         socket2.emit("lampsOff",lamps);
+        
         }
        
       document.getElementById(lampsOn[lamps]).style.display="none";
@@ -34,7 +35,12 @@
         socket2.emit("lampsOn",lamps);
         lamps+=1;
         }
-      if(lamps==10)loop();
+        if(lamps==10){
+          setInterval(loop(),3800);
+          setInterval(() => {
+            loop()
+          }, 4000);
+        };
       };
 
       function loop() {

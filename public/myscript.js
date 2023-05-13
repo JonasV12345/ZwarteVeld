@@ -63,7 +63,7 @@ io.listen(9000);
 io.sockets.on('connection', function (socket) {// WebSocket Connection
     var lamps = 0;
     socket.on('lamps', function(lamps){
-        console.log("het aantal lampen die branden",lamps);
+        console.log("het aantal lampen die branden",lamps+1);
             for (let i = 0; i < lamps; i++) {
                 lampen[i].writeSync(1);
                 
