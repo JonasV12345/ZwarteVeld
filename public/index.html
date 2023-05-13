@@ -22,6 +22,7 @@
         socket1.emit("lampsOff",lamps);
         socket2.emit("lampsOff",lamps);
         }
+       
       document.getElementById(lampsOn[lamps]).style.display="none";
 
       };
@@ -29,11 +30,40 @@
   
       if(lamps<10){
         document.getElementById(lampsOn[lamps]).style.display="block";
-        lamps+=1;
         socket1.emit("lampsOn",lamps);
         socket2.emit("lampsOn",lamps);
+        lamps+=1;
         }
+      if(lamps==10)loop();
       };
+
+      function loop() {
+        loopDown(8,0,200);
+        setTimeout(() => {
+          loopUp(9,200);
+        }, 2000);
+      }
+
+      function loopUp(lamps,time){
+       
+        for (let i = 0; i < lamps; i++) {
+          setTimeout(() => {
+          socket2.emit("lampsOn",i);
+          document.getElementById(lampsOn[i]).style.display="block";
+          }, time*(i+1)); 
+        }
+      }
+
+      function loopDown(startpoint,eindpoint,time){
+        
+          for (let i = startpoint; i >= eindpoint; i--) {
+            setTimeout(() => {
+            socket2.emit("lampsOff",i);
+            document.getElementById(lampsOn[i]).style.display="none";
+            }, time*((startpoint-i)+1)); 
+          }  
+      }
+
     </script>
     <h1>test</h1>
     <div style="position: relative">

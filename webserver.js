@@ -79,48 +79,12 @@ io.sockets.on("connection", function (socket) {
   // WebSocket Connection
 
   socket.on("lampsOff", function (lamps) {
-    if(lamps==9){
-      clearTimeout(intervalId,);
-      Off(9, 0);
-    }
-    else{
-    Off(9,lamps, 0);
-    };
+    lampen[lamps].writeSync(0);
+    
   });
 
   socket.on("lampsOn", function (lamps) {
-   
-    On(lamps, 0);
-    if (lamps === 10) {
-      intervalId = setInterval(loop,3600);
-    }
+    lampen[lamps].writeSync(1);
+    console.log(lamps);
    });
-
-
-  function Off(x,aantallampen, delay) {
-    //console.log("het aantal lampen die branden", aantallampen);
-    for (let j = x; j >= aantallampen; j--) {
-      //console.log(aantallampen);
-      setTimeout(function () {
-        lampen[j].writeSync(0);
-      }, delay * (x - j + 1));
-    }
-  }
-  function On(aantallampen, delay) {
-    //console.log("het aantal lampen die branden", aantallampen);
-    for (let i = 0; i < aantallampen; i++) {
-      setTimeout(function () {
-        lampen[i].writeSync(1);
-      }, delay * (i + 1));
-    }
-    console.log("lampen aan", aantallampen);
-  }
-  function loop(){
-    setTimeout(function() {
-      Off(8, 0, 200);
-      }, 100);
-    setTimeout(function() {
-      On(9, 200);
-      }, 2000);
-  }
  });
